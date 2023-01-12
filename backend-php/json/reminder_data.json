@@ -1,0 +1,16 @@
+{
+    "reminderData": [
+        {
+            "text": "lavare i piatti",
+            "status": false
+        },
+        {
+            "text": "fare il bucato",
+            "status": false
+        },
+        {
+            "text": "chiamare pippo",
+            "status": false
+        }
+    ]
+}

@@ -1,21 +1,28 @@
-// const tasks = [
-//     { text: 'Fare i compiti', done: false }, 
-//     { text: 'Fare la spesa', done: true }, 
-//     { text: 'Fare il bucato', done: false }
-// ];
+// basic url of API
+const urlAPI = "http://localhost:8888/php-todo-list-json/backend-php/";
 
+// vue app
 const app = Vue.createApp({
     data() {
         return {
-            tasks: [
-                { text: 'Fare i compiti', done: false },
-                { text: 'Fare la spesa', done: false },
-                { text: 'Fare il bucato', done: false }
-            ],
+            // declare variables
+            tasks: [],
             input: '',
         }
     },
     methods: {
+        getAPI_data() {
+            // get api data from url
+            axios.get(urlAPI + "dataAPI.php")
+                .then(response => {
+
+                    // add api data to tasks[]
+                    this.tasks = response.data.reminderData;
+                    console.log(response.data.reminderData);
+                }).catch(error => {
+                    console.log(error);
+                });
+        },
         //add new task to tasks
         add() {
             this.tasks.push({ text: this.input, done: false });
@@ -35,9 +42,12 @@ const app = Vue.createApp({
                     console.log(index);
                 }
             });
-        }
-
+        },
     },
+    beforeMount() {
+        this.getAPI_data();
+    },
+
 })
 
 app.mount('#app')
