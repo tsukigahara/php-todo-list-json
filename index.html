@@ -27,14 +27,15 @@
         <div class="container">
             <header>
                 <h1>MY REMINDER</h1>
+                <!-- remind input -->
                 <div class="row row-cols-sm-auto g-3">
                     <div class="col-12">
                         <input type="text" class="form-control " v-model="input" placeholder="Things to remind..."
-                            @keyup.enter="add()">
+                            @keyup.enter="addRemind()">
                         <div class="form-text">Click Add or press Enter</div>
                     </div>
                     <div class="col-12">
-                        <button type="button" class="btn btn-primary" @click="add()">Add</button>
+                        <button type="button" class="btn btn-primary" @click="addRemind()">Add</button>
                     </div>
                 </div>
             </header>
@@ -43,18 +44,22 @@
                 <div class="d-flex align-items-center gap-2">
                     <h3 class="d-inline m-0">TO DO</h3>
                     <!-- task left counter -->
-                    <span class="badge bg-primary rounded-pill">{{ tasks.length }}</span>
+                    <span class="badge bg-primary rounded-pill">{{ reminderList.length }}</span>
                 </div>
-                <div class="form-text">Check to delete it (you can undo within 5s)</div>
+                <div class="form-text">Check to delete it</div>
                 <!-- LIST GROUP -->
                 <div class="row my-3">
                     <div class="col-5">
                         <ul class="list-group">
-                            <li class="list-group-item" v-for="(task, index) in tasks">
-                                <input class="form-check-input me-1" :id="'checkID-'+index" type="checkbox"
-                                    v-model="tasks[index].done" @click="remove()">
-                                <label class="form-check-label stretched-link" :for="'checkID-'+index">{{ task.text
-                                    }}</label>
+                            <!-- print reminder list -->
+                            <li class="list-group-item" v-for="(task, index) in reminderList">
+                                <!-- checkbox -->
+                                <input class="form-check-input me-1" :id="'remind-'+index" type="checkbox"
+                                    @click="removeRemind(index)">
+                                <!-- checkbox label -->
+                                <label class="form-check-label stretched-link" :for="'remind-'+index">
+                                    {{ task.text}}
+                                </label>
                             </li>
                         </ul>
                     </div>

@@ -6,43 +6,67 @@ const app = Vue.createApp({
     data() {
         return {
             // declare variables
-            tasks: [],
+            reminderList: [],
             input: '',
         }
     },
     methods: {
         getAPI_data() {
-            // get api data from url
-            axios.get(urlAPI + "dataAPI.php")
+            // get reminderDataAPI data from url
+            axios.get(urlAPI + "reminderDataAPI.php")
                 .then(response => {
 
-                    // add api data to tasks[]
-                    this.tasks = response.data.reminderData;
-                    console.log(response.data.reminderData);
+                    // add reminderDataAPI data to reminderList[]
+                    this.reminderList = response.data;
+                    console.log(response.data);
                 }).catch(error => {
                     console.log(error);
                 });
         },
-        //add new task to tasks
-        add() {
-            this.tasks.push({ text: this.input, done: false });
-            this.input = '';
+        //add new task to reminderList
+        addRemind() {
 
-        },
-        //when clicked checkbox will remove checked task after 5s
-        remove() {
-            setTimeout(this.spliceFromArray, 5000);
-            //non esiste una forma più compatta?
-            //si poteva fare con v-if ?
-        },
-        spliceFromArray() {
-            this.tasks.forEach((element, index) => {
-                if (element.done === true) {
-                    this.tasks.splice(index, 1);
-                    console.log(index);
+            // set parameters to be send to API with axios.get (example: http://example.php?input=new_remind_text)
+            const params = {
+                params: {
+                    'input': this.input,
                 }
-            });
+            };
+
+            // request addRemind API with parameters (example: http://example.php?input=new_remind_text)
+            axios.get(urlAPI + "addRemindAPI.php", params)
+                .then(() => {
+
+                    // re-request reminderDataAPI data (with new remind)
+                    this.getAPI_data();
+                }
+                ).catch(error => {
+                    console.log(error);
+                });
+
+            // reset input value
+            this.input = "";
         },
+        ////////////////////////////////////TEST///////////////////////////////////////////////
+        // removeRemind(index) {
+        //     // index indicates which task is checked by checkbox
+
+        //     // set parameters to be send to API with axios.get
+        //     const params = {
+        //         params: {
+        //             'index': index,
+        //         }
+        //     };
+        //     // request removeRemind API with parameters 
+        //     axios.get(urlAPI + "removeRemindAPI.php", params)
+        //         .then(() => {
+        //             // re-request reminderDataAPI data (with removed remind)
+        //             this.getAPI_data();
+        //         }
+        //         ).catch(error => {
+        //             console.log(error);
+        //         });
+        // },
     },
     beforeMount() {
         this.getAPI_data();
